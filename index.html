@@ -1,0 +1,3001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python DSA — Practice Question Bank</title>
+<style>
+:root {
+  --bg: #0f1115;
+  --panel: #161922;
+  --panel-2: #1c2029;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa1b1;
+  --accent: #5eead4;
+  --accent-2: #7dd3fc;
+  --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  background: radial-gradient(1200px 800px at 100% -10%, #16202280 0%, transparent 60%), var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: 24px 0 40px;
+}
+.brand {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.brand .eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.brand h1 {
+  font-size: 19px;
+  margin: 6px 0 4px;
+  line-height: 1.25;
+}
+.brand .sub {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.search-wrap {
+  padding: 0 16px 14px;
+}
+#searchInput {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--sans);
+  outline: none;
+}
+#searchInput:focus { border-color: var(--accent); }
+.nav-list { list-style: none; margin: 0; padding: 0 10px; }
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: background .15s, color .15s;
+}
+.nav-link:hover { background: var(--panel-2); color: var(--text); }
+.nav-link.active { background: #1d3a36; color: var(--accent); }
+.nav-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent-2);
+  width: 20px;
+  flex-shrink: 0;
+}
+.nav-text { flex: 1; }
+.nav-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--panel-2);
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+.nav-link.active .nav-count { background: #14413b; color: var(--accent); }
+
+/* ---------- Main ---------- */
+main {
+  flex: 1;
+  min-width: 0;
+  padding: 40px 48px 100px;
+  max-width: 980px;
+}
+.hero {
+  margin-bottom: 40px;
+}
+.hero .eyebrow {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-size: 34px;
+  margin: 10px 0 12px;
+  letter-spacing: -0.01em;
+}
+.hero p {
+  color: var(--muted);
+  font-size: 15px;
+  max-width: 640px;
+  line-height: 1.6;
+}
+.stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 22px;
+}
+.stat {
+  font-family: var(--mono);
+}
+.stat .num { font-size: 26px; color: var(--accent); font-weight: 600; }
+.stat .label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+.section {
+  margin-bottom: 52px;
+  scroll-margin-top: 24px;
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.section-head h2 {
+  font-size: 21px;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 1;
+}
+.sec-num {
+  font-family: var(--mono);
+  color: var(--accent-2);
+  font-size: 14px;
+}
+.sec-count {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: var(--badge-color);
+  border: 1px solid var(--badge-color);
+  background: color-mix(in srgb, var(--badge-color) 14%, transparent);
+  white-space: nowrap;
+}
+
+.qlist { display: flex; flex-direction: column; gap: 10px; }
+.qcard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.qcard[open] { border-color: #33404f; }
+.qcard summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  font-size: 14px;
+  user-select: none;
+}
+.qcard summary::-webkit-details-marker { display: none; }
+.q-index {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 40px;
+}
+.q-title { flex: 1; font-weight: 500; }
+.chev {
+  color: var(--muted);
+  transition: transform .18s;
+  font-size: 12px;
+}
+.qcard[open] .chev { transform: rotate(180deg); }
+.qbody {
+  padding: 4px 16px 18px 68px;
+  border-top: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.statement {
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 14px 0 14px;
+}
+.io-block {
+  background: #10131a;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.io-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.io-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent-2);
+  width: 52px;
+  flex-shrink: 0;
+}
+.io-row code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: #ffd479;
+  background: transparent;
+  word-break: break-word;
+}
+.explain {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 8px 0 0;
+  line-height: 1.55;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+.corner-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #f4a261;
+  margin: 0 0 6px;
+}
+.corner-list {
+  margin: 0 0 14px;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.corner-list li { margin-bottom: 2px; }
+.lc-link {
+  display: inline-block;
+  font-size: 12.5px;
+  font-family: var(--mono);
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid #2a4a44;
+  padding: 6px 12px;
+  border-radius: 7px;
+  background: #12211d;
+}
+.lc-link:hover { background: #16302a; }
+.lc-link.lc-none {
+  color: var(--muted);
+  border-color: var(--border);
+  background: transparent;
+}
+
+.hidden { display: none !important; }
+
+footer {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 30px 0 10px;
+  font-family: var(--mono);
+}
+
+@media (max-width: 860px) {
+  body { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; }
+  main { padding: 28px 20px 80px; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="eyebrow">Python · DSA</div>
+    <h1>Practice Question Bank</h1>
+    <div class="sub">17 sections · 109 questions</div>
+  </div>
+  <div class="search-wrap">
+    <input id="searchInput" type="text" placeholder="Search questions…" autocomplete="off">
+  </div>
+  <ul class="nav-list">
+    <li><a href="#sec-1" class="nav-link" data-sec="1"><span class="nav-num">01</span><span class="nav-text">Arrays / Lists</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-2" class="nav-link" data-sec="2"><span class="nav-num">02</span><span class="nav-text">Strings</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-3" class="nav-link" data-sec="3"><span class="nav-num">03</span><span class="nav-text">Two Pointers &amp; Sliding Window</span><span class="nav-count">7</span></a></li>
+<li><a href="#sec-4" class="nav-link" data-sec="4"><span class="nav-num">04</span><span class="nav-text">Recursion</span><span class="nav-count">6</span></a></li>
+<li><a href="#sec-5" class="nav-link" data-sec="5"><span class="nav-num">05</span><span class="nav-text">Linked Lists</span><span class="nav-count">7</span></a></li>
+<li><a href="#sec-6" class="nav-link" data-sec="6"><span class="nav-num">06</span><span class="nav-text">Stacks</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-7" class="nav-link" data-sec="7"><span class="nav-num">07</span><span class="nav-text">Queues (Deque, Priority Queue)</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-8" class="nav-link" data-sec="8"><span class="nav-num">08</span><span class="nav-text">Hashing (Dict / Set)</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-9" class="nav-link" data-sec="9"><span class="nav-num">09</span><span class="nav-text">Sorting Algorithms</span><span class="nav-count">6</span></a></li>
+<li><a href="#sec-10" class="nav-link" data-sec="10"><span class="nav-num">10</span><span class="nav-text">Binary Search</span><span class="nav-count">7</span></a></li>
+<li><a href="#sec-11" class="nav-link" data-sec="11"><span class="nav-num">11</span><span class="nav-text">Trees (Binary Tree / BST)</span><span class="nav-count">9</span></a></li>
+<li><a href="#sec-12" class="nav-link" data-sec="12"><span class="nav-num">12</span><span class="nav-text">Heaps</span><span class="nav-count">6</span></a></li>
+<li><a href="#sec-13" class="nav-link" data-sec="13"><span class="nav-num">13</span><span class="nav-text">Backtracking</span><span class="nav-count">8</span></a></li>
+<li><a href="#sec-14" class="nav-link" data-sec="14"><span class="nav-num">14</span><span class="nav-text">Graphs</span><span class="nav-count">9</span></a></li>
+<li><a href="#sec-15" class="nav-link" data-sec="15"><span class="nav-num">15</span><span class="nav-text">Dynamic Programming</span><span class="nav-count">10</span></a></li>
+<li><a href="#sec-16" class="nav-link" data-sec="16"><span class="nav-num">16</span><span class="nav-text">Greedy Algorithms</span><span class="nav-count">5</span></a></li>
+<li><a href="#sec-17" class="nav-link" data-sec="17"><span class="nav-num">17</span><span class="nav-text">Tries</span><span class="nav-count">4</span></a></li>
+  </ul>
+</aside>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">Companion to: DSA Topics to Cover.docx</div>
+    <h1>DSA Practice Questions</h1>
+    <p>Every question below includes the problem statement, an example input/output, a short explanation of the approach, and the corner cases worth testing before calling a solution done. Work through sections in order — click a question to expand it.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">17</div><div class="label">Sections</div></div>
+      <div class="stat"><div class="num">109</div><div class="label">Questions</div></div>
+      <div class="stat"><div class="num">Easy → Hard</div><div class="label">Difficulty range</div></div>
+    </div>
+  </div>
+
+  
+    <section class="section" id="sec-1" data-sec="1">
+      <div class="section-head">
+        <h2><span class="sec-num">01</span>Arrays / Lists</h2>
+        <span class="badge" style="--badge-color:#2e7d32">Easy</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="find the maximum and minimum in an array">
+          <summary>
+            <span class="q-index">1.1</span>
+            <span class="q-title">Find the Maximum and Minimum in an Array</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array of integers, find the maximum and minimum element in a single pass.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [3, 7, 1, 9, 4]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>max = 9, min = 1</code></div>
+              <p class="explain">Scan once, tracking the largest and smallest values seen so far.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array — decide on a defined behavior (e.g. raise an error).</li>
+<li>Array with a single element — max and min are both that element.</li>
+<li>All elements are the same, e.g. [5, 5, 5].</li>
+<li>Array contains negative numbers, e.g. [-3, -9, -1].</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="reverse an array in place">
+          <summary>
+            <span class="q-index">1.2</span>
+            <span class="q-title">Reverse an Array In Place</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Reverse the elements of an array without using extra space (O(1) extra space).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 2, 3, 4, 5]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[5, 4, 3, 2, 1]</code></div>
+              <p class="explain">Swap elements from both ends moving toward the center using two pointers.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array.</li>
+<li>Array with one element (no change needed).</li>
+<li>Even-length vs odd-length arrays (middle element in odd case).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/reverse-string/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="move all zeros to the end">
+          <summary>
+            <span class="q-index">1.3</span>
+            <span class="q-title">Move All Zeros to the End</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, move all 0s to the end while maintaining the relative order of non-zero elements, in place.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [0, 1, 0, 3, 12]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[1, 3, 12, 0, 0]</code></div>
+              <p class="explain">Use a pointer to track the position where the next non-zero element should go.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Array with no zeros at all.</li>
+<li>Array that is all zeros.</li>
+<li>Single-element array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/move-zeroes/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find the missing number (1 to n)">
+          <summary>
+            <span class="q-index">1.4</span>
+            <span class="q-title">Find the Missing Number (1 to N)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array containing n distinct numbers taken from 1 to n+1 with one missing, find the missing number.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 2, 4, 5]  (n+1 = 5)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">Use the formula sum(1..n+1) - sum(array), or XOR all numbers 1..n+1 with all array elements.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Missing number is the first (1) or the last (n+1).</li>
+<li>Array of size 1 (only one number 1..2, one is missing).</li>
+<li>Large n — watch for potential overflow in other languages (not an issue in Python).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/missing-number/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="kadane&#x27;s algorithm — maximum subarray sum">
+          <summary>
+            <span class="q-index">1.5</span>
+            <span class="q-title">Kadane&#x27;s Algorithm — Maximum Subarray Sum</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the contiguous subarray with the largest sum and return that sum.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>6</code></div>
+              <p class="explain">The subarray [4, -1, 2, 1] has the largest sum = 6.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>All elements are negative — answer is the single largest (least negative) element.</li>
+<li>Single-element array.</li>
+<li>All elements are positive — answer is the sum of the whole array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-2" data-sec="2">
+      <div class="section-head">
+        <h2><span class="sec-num">02</span>Strings</h2>
+        <span class="badge" style="--badge-color:#2e7d32">Easy</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="check if a string is a palindrome">
+          <summary>
+            <span class="q-index">2.1</span>
+            <span class="q-title">Check if a String is a Palindrome</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a string, determine if it reads the same forwards and backwards.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;racecar&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Compare characters from both ends moving inward.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty string (usually considered a palindrome).</li>
+<li>Single character string.</li>
+<li>Mixed case, e.g. &quot;RaceCar&quot; — decide if case-insensitive.</li>
+<li>Strings with spaces/punctuation, e.g. &quot;A man a plan a canal Panama&quot;.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/valid-palindrome/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="check if two strings are anagrams">
+          <summary>
+            <span class="q-index">2.2</span>
+            <span class="q-title">Check if Two Strings are Anagrams</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given two strings, determine if one is an anagram of the other (same characters, same frequency).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s1 = &quot;listen&quot;, s2 = &quot;silent&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Both strings contain the exact same character counts.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Strings of different lengths — immediately False.</li>
+<li>Empty strings — considered anagrams of each other.</li>
+<li>Case sensitivity, e.g. &quot;Listen&quot; vs &quot;Silent&quot;.</li>
+<li>Strings with repeated characters, e.g. &quot;aabb&quot; vs &quot;abab&quot;.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/valid-anagram/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="reverse words in a sentence">
+          <summary>
+            <span class="q-index">2.3</span>
+            <span class="q-title">Reverse Words in a Sentence</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sentence, reverse the order of the words (not the characters within each word).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;the sky is blue&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;blue is sky the&quot;</code></div>
+              <p class="explain">Split on whitespace, reverse the list of words, and rejoin with a single space.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Multiple consecutive spaces between words.</li>
+<li>Leading or trailing spaces.</li>
+<li>Single word input.</li>
+<li>Empty string.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/reverse-words-in-a-string/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="first non-repeating character">
+          <summary>
+            <span class="q-index">2.4</span>
+            <span class="q-title">First Non-Repeating Character</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the first character in a string that does not repeat, and return its index (or -1 if none exists).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;swiss&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>1  (the character &#x27;w&#x27;)</code></div>
+              <p class="explain">Count character frequencies, then scan left to right for the first count-1 character.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>All characters repeat, e.g. &quot;aabbcc&quot; — return -1.</li>
+<li>Single character string — that character is the answer.</li>
+<li>Empty string.</li>
+<li>All characters are unique, e.g. &quot;abcdef&quot; — first character is the answer.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/first-unique-character-in-a-string/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest common prefix">
+          <summary>
+            <span class="q-index">2.5</span>
+            <span class="q-title">Longest Common Prefix</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array of strings, find the longest common prefix string among them.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>strs = [&quot;flower&quot;, &quot;flow&quot;, &quot;flight&quot;]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;fl&quot;</code></div>
+              <p class="explain">Compare characters column by column across all strings until a mismatch is found.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array of strings — return &quot;&quot;.</li>
+<li>No common prefix at all, e.g. [&quot;dog&quot;, &quot;cat&quot;] — return &quot;&quot;.</li>
+<li>Array with a single string — the whole string is the prefix.</li>
+<li>One of the strings is empty — prefix must be &quot;&quot;.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-3" data-sec="3">
+      <div class="section-head">
+        <h2><span class="sec-num">03</span>Two Pointers &amp; Sliding Window</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">7 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="two sum (sorted array)">
+          <summary>
+            <span class="q-index">3.1</span>
+            <span class="q-title">Two Sum (Sorted Array)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array and a target, find two numbers that add up to the target using two pointers (O(n)).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 7, 11, 15], target = 9</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[0, 1]</code></div>
+              <p class="explain">Start pointers at both ends; move left pointer right if sum is too small, right pointer left if too big.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>No pair sums to the target.</li>
+<li>Duplicate values in the array, e.g. [2, 2, 4] target 4.</li>
+<li>Array with only two elements.</li>
+<li>Negative numbers in the array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="container with most water">
+          <summary>
+            <span class="q-index">3.2</span>
+            <span class="q-title">Container With Most Water</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given heights of vertical lines, find two lines that together with the x-axis form a container holding the most water.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>height = [1, 8, 6, 2, 5, 4, 8, 3, 7]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>49</code></div>
+              <p class="explain">Move the pointer at the shorter line inward, since it&#x27;s the limiting factor for area.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>All heights are the same value.</li>
+<li>Only two elements in the array.</li>
+<li>Heights include 0.</li>
+<li>Strictly decreasing or increasing heights.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="remove duplicates from sorted array (in-place)">
+          <summary>
+            <span class="q-index">3.3</span>
+            <span class="q-title">Remove Duplicates from Sorted Array (In-Place)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array, remove duplicates in place so each element appears once, and return the new length.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [0, 0, 1, 1, 1, 2, 2, 3]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5 → [0, 1, 2, 3, ...]</code></div>
+              <p class="explain">Use a slow pointer for the position to write the next unique value, fast pointer to scan.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array — return 0.</li>
+<li>All elements identical, e.g. [1, 1, 1].</li>
+<li>No duplicates at all — array unchanged.</li>
+<li>Single-element array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest substring without repeating characters">
+          <summary>
+            <span class="q-index">3.4</span>
+            <span class="q-title">Longest Substring Without Repeating Characters</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a string, find the length of the longest substring without repeating characters.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;abcabcbb&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">The answer is &quot;abc&quot;, with a length of 3, found using a sliding window with a set/dict.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty string — return 0.</li>
+<li>All characters are the same, e.g. &quot;bbbb&quot; — answer is 1.</li>
+<li>All characters are unique — answer is the string length.</li>
+<li>String with spaces or special characters.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="maximum sum subarray of size k">
+          <summary>
+            <span class="q-index">3.5</span>
+            <span class="q-title">Maximum Sum Subarray of Size K</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array and an integer k, find the maximum sum of any contiguous subarray of size k.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 1, 5, 1, 3, 2], k = 3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>9</code></div>
+              <p class="explain">Use a fixed-size sliding window: slide right, subtract the leaving element, add the entering one.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k equals the array length — answer is the sum of the whole array.</li>
+<li>k is 1 — answer is the max element.</li>
+<li>k greater than array length — invalid input, handle explicitly.</li>
+<li>Array with negative numbers.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="trapping rain water">
+          <summary>
+            <span class="q-index">3.6</span>
+            <span class="q-title">Trapping Rain Water</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given elevation heights, compute how much water can be trapped after raining, using two pointers.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>height = [0,1,0,2,1,0,1,3,2,1,2,1]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>6</code></div>
+              <p class="explain">Track max height seen from left and right; water trapped at each bar is min(leftMax, rightMax) - height[i].</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Strictly increasing or decreasing heights — traps no water.</li>
+<li>All heights are 0.</li>
+<li>Array with fewer than 3 elements — traps no water.</li>
+<li>Flat terrain (all heights equal).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/trapping-rain-water/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="minimum window substring">
+          <summary>
+            <span class="q-index">3.7</span>
+            <span class="q-title">Minimum Window Substring</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given strings s and t, find the minimum window in s that contains all characters of t (including duplicates).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;ADOBECODEBANC&quot;, t = &quot;ABC&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;BANC&quot;</code></div>
+              <p class="explain">Expand the window until it&#x27;s valid, then shrink from the left while it stays valid, tracking the best window.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>t is longer than s — no valid window exists, return &quot;&quot;.</li>
+<li>t has duplicate characters, e.g. t = &quot;AABC&quot;.</li>
+<li>No valid window exists at all.</li>
+<li>s equals t exactly.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/minimum-window-substring/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-4" data-sec="4">
+      <div class="section-head">
+        <h2><span class="sec-num">04</span>Recursion</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">6 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="factorial of a number">
+          <summary>
+            <span class="q-index">4.1</span>
+            <span class="q-title">Factorial of a Number</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Compute n! (n factorial) recursively.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 5</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>120</code></div>
+              <p class="explain">factorial(n) = n * factorial(n-1), with factorial(0) = 1 as the base case.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 — base case, should return 1.</li>
+<li>Negative input — factorial is undefined, handle explicitly.</li>
+<li>Large n — deep recursion may hit Python&#x27;s recursion limit.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="fibonacci series (recursive)">
+          <summary>
+            <span class="q-index">4.2</span>
+            <span class="q-title">Fibonacci Series (Recursive)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Return the nth Fibonacci number using plain recursion.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 6</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>8</code></div>
+              <p class="explain">fib(n) = fib(n-1) + fib(n-2), with fib(0)=0 and fib(1)=1 as base cases.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 or n = 1 — base cases.</li>
+<li>Negative n — undefined, handle explicitly.</li>
+<li>Large n — plain recursion is exponential time; discuss memoization as a follow-up.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/fibonacci-number/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="sum of digits of a number">
+          <summary>
+            <span class="q-index">4.3</span>
+            <span class="q-title">Sum of Digits of a Number</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Recursively compute the sum of the digits of a non-negative integer.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 12345</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>15</code></div>
+              <p class="explain">sumDigits(n) = n % 10 + sumDigits(n // 10), with sumDigits(0) = 0 as the base case.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 — base case.</li>
+<li>Single digit number, e.g. n = 7.</li>
+<li>Negative numbers — decide how to handle the sign.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="power of a number (x^n)">
+          <summary>
+            <span class="q-index">4.4</span>
+            <span class="q-title">Power of a Number (x^n)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Compute x raised to the power n recursively, ideally in O(log n) using fast exponentiation.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>x = 2, n = 10</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>1024</code></div>
+              <p class="explain">Use x^n = (x^(n/2))^2 for even n, halving the problem each call.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 — any x^0 = 1.</li>
+<li>Negative exponent, e.g. n = -2 → 1/x^2.</li>
+<li>x = 0 with n = 0 (mathematically ambiguous — decide convention).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/powx-n/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="print all subsets of a set">
+          <summary>
+            <span class="q-index">4.5</span>
+            <span class="q-title">Print All Subsets of a Set</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a set of distinct integers, recursively generate all possible subsets (the power set).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 2, 3]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]]</code></div>
+              <p class="explain">At each element, recursively branch into &#x27;include it&#x27; and &#x27;exclude it&#x27;.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty input array — output is [[]].</li>
+<li>Single-element array — output is [[], [x]].</li>
+<li>Duplicate elements in the input — decide whether duplicate subsets are allowed.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/subsets/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="tower of hanoi">
+          <summary>
+            <span class="q-index">4.6</span>
+            <span class="q-title">Tower of Hanoi</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given n disks, print the sequence of moves to transfer all disks from source to destination rod using an auxiliary rod.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>7 moves printed, e.g. &#x27;Move disk 1 from A to C&#x27; ...</code></div>
+              <p class="explain">Move n-1 disks to auxiliary, move the largest disk to destination, then move n-1 disks from auxiliary to destination.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 1 — a single move.</li>
+<li>n = 0 — no moves at all.</li>
+<li>Large n — move count grows as 2^n - 1, so recursion depth grows quickly.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-5" data-sec="5">
+      <div class="section-head">
+        <h2><span class="sec-num">05</span>Linked Lists</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">7 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="reverse a linked list">
+          <summary>
+            <span class="q-index">5.1</span>
+            <span class="q-title">Reverse a Linked List</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Reverse a singly linked list, in place, and return the new head.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; None</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; None</code></div>
+              <p class="explain">Walk the list, at each node re-point &#x27;next&#x27; to the previous node using three pointers (prev, curr, next).</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty list (head is None).</li>
+<li>Single-node list — reversal is a no-op.</li>
+<li>List with two nodes.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/reverse-linked-list/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="detect a cycle (floyd&#x27;s algorithm)">
+          <summary>
+            <span class="q-index">5.2</span>
+            <span class="q-title">Detect a Cycle (Floyd&#x27;s Algorithm)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Determine if a linked list has a cycle, using O(1) space (slow/fast pointers).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; back to 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Move slow by 1 and fast by 2 steps; if they ever meet, a cycle exists.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty list — no cycle.</li>
+<li>Single node pointing to itself — cycle of length 1.</li>
+<li>List with no cycle at all (fast pointer reaches None).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/linked-list-cycle/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find the middle of a linked list">
+          <summary>
+            <span class="q-index">5.3</span>
+            <span class="q-title">Find the Middle of a Linked List</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Return the middle node of a singly linked list using the slow/fast pointer technique.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>Node with value 3</code></div>
+              <p class="explain">Move slow by 1 step and fast by 2 steps; when fast reaches the end, slow is at the middle.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Even number of nodes — decide whether to return the first or second middle node.</li>
+<li>Single-node list — that node is the middle.</li>
+<li>Empty list.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="merge two sorted linked lists">
+          <summary>
+            <span class="q-index">5.4</span>
+            <span class="q-title">Merge Two Sorted Linked Lists</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Merge two sorted linked lists into one sorted linked list.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>l1 = 1-&gt;2-&gt;4, l2 = 1-&gt;3-&gt;4</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</code></div>
+              <p class="explain">Use a dummy head node, repeatedly attach the smaller of the two current nodes.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>One list is empty — return the other list as-is.</li>
+<li>Both lists are empty — return None.</li>
+<li>Lists of very different lengths.</li>
+<li>Lists with duplicate values across both.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="remove nth node from end of list">
+          <summary>
+            <span class="q-index">5.5</span>
+            <span class="q-title">Remove Nth Node From End of List</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Remove the nth node from the end of a linked list in a single pass, and return the head.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>list = 1-&gt;2-&gt;3-&gt;4-&gt;5, n = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>1-&gt;2-&gt;3-&gt;5</code></div>
+              <p class="explain">Use two pointers with a gap of n; when the fast pointer reaches the end, the slow pointer is just before the node to remove.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n equals the length of the list — the head itself must be removed.</li>
+<li>Single-node list with n = 1 — result is an empty list.</li>
+<li>n larger than the list length — invalid input, handle explicitly.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="palindrome linked list">
+          <summary>
+            <span class="q-index">5.6</span>
+            <span class="q-title">Palindrome Linked List</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Check whether a singly linked list is a palindrome, ideally in O(1) extra space.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>1 -&gt; 2 -&gt; 2 -&gt; 1</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Find the middle, reverse the second half, then compare both halves node by node.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty list — considered a palindrome.</li>
+<li>Single-node list — always a palindrome.</li>
+<li>Even vs odd length lists (affects where the middle split happens).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/palindrome-linked-list/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="add two numbers (as linked lists)">
+          <summary>
+            <span class="q-index">5.7</span>
+            <span class="q-title">Add Two Numbers (as Linked Lists)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Two numbers are represented as linked lists in reverse digit order. Add them and return the sum as a linked list.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>l1 = 2-&gt;4-&gt;3 (342), l2 = 5-&gt;6-&gt;4 (465)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>7-&gt;0-&gt;8 (807)</code></div>
+              <p class="explain">Add digit by digit from the head (least significant digit), carrying over when the sum exceeds 9.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Lists of different lengths, e.g. 9-&gt;9 + 1.</li>
+<li>Carry propagates all the way to a new leading digit, e.g. 9-&gt;9 + 1 -&gt; 0-&gt;0-&gt;1.</li>
+<li>One list is empty (treat as adding zero).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-6" data-sec="6">
+      <div class="section-head">
+        <h2><span class="sec-num">06</span>Stacks</h2>
+        <span class="badge" style="--badge-color:#2e7d32">Easy</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="valid parentheses">
+          <summary>
+            <span class="q-index">6.1</span>
+            <span class="q-title">Valid Parentheses</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a string with brackets ( ) { } [ ], determine if the brackets are balanced and properly nested.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;{[()]}&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Push opening brackets onto a stack; on a closing bracket, pop and check it matches.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty string — considered valid.</li>
+<li>Unmatched closing bracket with an empty stack, e.g. &quot;)&quot;.</li>
+<li>Only opening brackets left on the stack at the end, e.g. &quot;(((&quot;.</li>
+<li>Mismatched types, e.g. &quot;[(])&quot;.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/valid-parentheses/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="implement a stack using an array/list">
+          <summary>
+            <span class="q-index">6.2</span>
+            <span class="q-title">Implement a Stack Using an Array/List</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Implement push, pop, peek, and isEmpty operations for a stack using Python&#x27;s list.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>push(1), push(2), pop()</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>pop() returns 2, stack is now [1]</code></div>
+              <p class="explain">append() for push, pop() for pop — both O(1) operations on a Python list.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Pop from an empty stack — should raise/handle an error.</li>
+<li>Peek on an empty stack.</li>
+<li>Pushing a very large number of elements (capacity considerations in fixed-size implementations).</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="next greater element">
+          <summary>
+            <span class="q-index">6.3</span>
+            <span class="q-title">Next Greater Element</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">For each element in an array, find the next element to its right that is greater than it (or -1 if none exists).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [4, 5, 2, 25]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[5, 25, 25, -1]</code></div>
+              <p class="explain">Use a monotonic decreasing stack; pop elements smaller than the current one and assign their answer.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Strictly decreasing array — every answer is -1.</li>
+<li>Strictly increasing array — every element&#x27;s answer is its right neighbor.</li>
+<li>Array with duplicate values.</li>
+<li>Single-element array — answer is [-1].</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/next-greater-element-i/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="evaluate postfix expression">
+          <summary>
+            <span class="q-index">6.4</span>
+            <span class="q-title">Evaluate Postfix Expression</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Evaluate an arithmetic expression given in postfix (Reverse Polish) notation.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tokens = [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>9</code></div>
+              <p class="explain">Push operands; on an operator, pop two operands, apply the operator, and push the result back.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Division by zero.</li>
+<li>Negative numbers as operands.</li>
+<li>Single operand with no operators, e.g. [&quot;5&quot;].</li>
+<li>Invalid/malformed expression (mismatched operand/operator counts).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="min stack (get minimum in o(1))">
+          <summary>
+            <span class="q-index">6.5</span>
+            <span class="q-title">Min Stack (Get Minimum in O(1))</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Design a stack that supports push, pop, top, and retrieving the minimum element, all in O(1) time.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>push(-2), push(0), push(-3), getMin()</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>-3</code></div>
+              <p class="explain">Maintain a second stack that tracks the minimum value at each level of the main stack.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>getMin() on an empty stack.</li>
+<li>Pushing the same minimum value multiple times, then popping some of them.</li>
+<li>Pushing values in already-sorted (ascending) order.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/min-stack/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-7" data-sec="7">
+      <div class="section-head">
+        <h2><span class="sec-num">07</span>Queues (Deque, Priority Queue)</h2>
+        <span class="badge" style="--badge-color:#558b2f">Easy-Medium</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="implement queue using two stacks">
+          <summary>
+            <span class="q-index">7.1</span>
+            <span class="q-title">Implement Queue Using Two Stacks</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Implement a FIFO queue (enqueue/dequeue) using only two stacks.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>enqueue(1), enqueue(2), dequeue()</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>dequeue() returns 1</code></div>
+              <p class="explain">Push new elements onto stack A; when dequeuing, if stack B is empty, pour all of A into B (reversing order), then pop from B.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Dequeue from an empty queue.</li>
+<li>Interleaved enqueue/dequeue calls (transfer only happens when B is empty).</li>
+<li>Single element enqueued and dequeued repeatedly.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/implement-queue-using-stacks/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="circular queue implementation">
+          <summary>
+            <span class="q-index">7.2</span>
+            <span class="q-title">Circular Queue Implementation</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Design a circular queue with a fixed size supporting enqueue, dequeue, front, rear, isEmpty, and isFull.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>CircularQueue(3): enqueue(1), enqueue(2), enqueue(3), enqueue(4)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>enqueue(4) fails — queue is full</code></div>
+              <p class="explain">Use a fixed-size array with front/rear indices computed modulo the capacity.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Queue is completely full — further enqueues should fail.</li>
+<li>Queue is completely empty — dequeue/front should fail.</li>
+<li>Wraparound case where rear index resets to 0 after reaching capacity - 1.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/design-circular-queue/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="generate binary numbers from 1 to n">
+          <summary>
+            <span class="q-index">7.3</span>
+            <span class="q-title">Generate Binary Numbers from 1 to N</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Using a queue, generate the binary representations of numbers from 1 to n, in order.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 5</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[&#x27;1&#x27;, &#x27;10&#x27;, &#x27;11&#x27;, &#x27;100&#x27;, &#x27;101&#x27;]</code></div>
+              <p class="explain">Start with &#x27;1&#x27; in the queue; for each number dequeued, enqueue itself + &#x27;0&#x27; and itself + &#x27;1&#x27;.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 1 — output is just [&#x27;1&#x27;].</li>
+<li>n = 0 — output is empty.</li>
+<li>Large n — string length of binary numbers grows with n.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="sliding window maximum (using deque)">
+          <summary>
+            <span class="q-index">7.4</span>
+            <span class="q-title">Sliding Window Maximum (Using Deque)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array and window size k, find the maximum element in each sliding window of size k.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1,3,-1,-3,5,3,6,7], k = 3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[3,3,5,5,6,7]</code></div>
+              <p class="explain">Use a deque storing indices in decreasing order of value; pop from the front when it&#x27;s out of the window.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k equals the array length — a single window, answer is the array max.</li>
+<li>k = 1 — answer equals the input array itself.</li>
+<li>Array with duplicate maximums.</li>
+<li>Strictly decreasing array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sliding-window-maximum/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="implement a priority queue using heapq">
+          <summary>
+            <span class="q-index">7.5</span>
+            <span class="q-title">Implement a Priority Queue Using heapq</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Use Python&#x27;s heapq module to implement a min-priority queue supporting insert and extract-min.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>heappush(pq, 5), heappush(pq, 1), heappush(pq, 3), heappop(pq)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>heappop(pq) returns 1</code></div>
+              <p class="explain">heapq maintains a binary min-heap internally on a plain Python list.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Popping from an empty heap raises an IndexError.</li>
+<li>Inserting duplicate priority values.</li>
+<li>Needing a max-heap — negate values before pushing, negate again on pop.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/kth-largest-element-in-a-stream/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-8" data-sec="8">
+      <div class="section-head">
+        <h2><span class="sec-num">08</span>Hashing (Dict / Set)</h2>
+        <span class="badge" style="--badge-color:#2e7d32">Easy</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="two sum (unsorted array)">
+          <summary>
+            <span class="q-index">8.1</span>
+            <span class="q-title">Two Sum (Unsorted Array)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an unsorted array and a target, return indices of two numbers that add up to the target, in O(n).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 7, 11, 15], target = 9</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[0, 1]</code></div>
+              <p class="explain">Store each seen value&#x27;s index in a dict; for each number, check if (target - number) is already in the dict.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>No valid pair exists.</li>
+<li>Duplicate values summing to the target, e.g. [3, 3] target 6.</li>
+<li>Multiple valid pairs — usually return the first found.</li>
+<li>Negative numbers in the array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find duplicate elements in an array">
+          <summary>
+            <span class="q-index">8.2</span>
+            <span class="q-title">Find Duplicate Elements in an Array</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, return all elements that appear more than once.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [4, 3, 2, 7, 8, 2, 3, 1]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[2, 3]</code></div>
+              <p class="explain">Track seen elements in a set; add to result set when an element is seen a second time.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>No duplicates at all — return an empty list.</li>
+<li>All elements are duplicates, e.g. [1, 1, 1, 1].</li>
+<li>An element appears more than twice — should still appear once in the result.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-all-duplicates-in-an-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="group anagrams">
+          <summary>
+            <span class="q-index">8.3</span>
+            <span class="q-title">Group Anagrams</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array of strings, group the anagrams together.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>strs = [&quot;eat&quot;,&quot;tea&quot;,&quot;tan&quot;,&quot;ate&quot;,&quot;nat&quot;,&quot;bat&quot;]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[&quot;eat&quot;,&quot;tea&quot;,&quot;ate&quot;], [&quot;tan&quot;,&quot;nat&quot;], [&quot;bat&quot;]]</code></div>
+              <p class="explain">Use the sorted string (or character count tuple) as a dict key, and group original strings under it.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty input array.</li>
+<li>Strings with different lengths (never anagrams of each other).</li>
+<li>Empty string in the input.</li>
+<li>All strings are identical.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/group-anagrams/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest consecutive sequence">
+          <summary>
+            <span class="q-index">8.4</span>
+            <span class="q-title">Longest Consecutive Sequence</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an unsorted array, find the length of the longest run of consecutive integers, in O(n).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [100, 4, 200, 1, 3, 2]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>4</code></div>
+              <p class="explain">Put all numbers in a set; only start counting a sequence from numbers whose predecessor (n-1) is not in the set.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array — return 0.</li>
+<li>Array with duplicate values, e.g. [1, 2, 2, 3].</li>
+<li>All numbers already consecutive.</li>
+<li>Array with a single element.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-consecutive-sequence/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="subarray sum equals k">
+          <summary>
+            <span class="q-index">8.5</span>
+            <span class="q-title">Subarray Sum Equals K</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array and integer k, find the total number of contiguous subarrays whose sum equals k.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 1, 1], k = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2</code></div>
+              <p class="explain">Use a running prefix sum and a dict counting how many times each prefix sum has occurred.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Negative numbers in the array (prefix sums can decrease).</li>
+<li>k = 0 with zeros present in the array.</li>
+<li>No subarray sums to k — answer is 0.</li>
+<li>Entire array itself sums to k.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/subarray-sum-equals-k/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-9" data-sec="9">
+      <div class="section-head">
+        <h2><span class="sec-num">09</span>Sorting Algorithms</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">6 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="implement bubble sort">
+          <summary>
+            <span class="q-index">9.1</span>
+            <span class="q-title">Implement Bubble Sort</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Sort an array by repeatedly swapping adjacent elements that are in the wrong order.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [5, 1, 4, 2, 8]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[1, 2, 4, 5, 8]</code></div>
+              <p class="explain">After each full pass, the largest unsorted element &#x27;bubbles&#x27; to its correct position at the end.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Already sorted array — can add an early-exit flag for O(n) best case.</li>
+<li>Array sorted in reverse order — worst case O(n²).</li>
+<li>Array with duplicate elements.</li>
+<li>Empty or single-element array.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="implement insertion sort">
+          <summary>
+            <span class="q-index">9.2</span>
+            <span class="q-title">Implement Insertion Sort</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Sort an array by building the sorted portion one element at a time, inserting each into its correct position.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [12, 11, 13, 5, 6]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[5, 6, 11, 12, 13]</code></div>
+              <p class="explain">For each element, shift larger elements in the sorted prefix to the right until the correct spot is found.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Already sorted array — best case O(n).</li>
+<li>Reverse sorted array — worst case O(n²).</li>
+<li>Array with duplicate elements.</li>
+<li>Single-element array.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="implement merge sort">
+          <summary>
+            <span class="q-index">9.3</span>
+            <span class="q-title">Implement Merge Sort</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Sort an array using the divide-and-conquer merge sort algorithm, guaranteed O(n log n).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [38, 27, 43, 3, 9, 82, 10]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[3, 9, 10, 27, 38, 43, 82]</code></div>
+              <p class="explain">Recursively split the array in half, sort each half, then merge the two sorted halves.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array or single-element array (base case of recursion).</li>
+<li>Array with all duplicate elements.</li>
+<li>Already sorted array (still O(n log n)).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sort-an-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="implement quick sort">
+          <summary>
+            <span class="q-index">9.4</span>
+            <span class="q-title">Implement Quick Sort</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Sort an array using quicksort, picking a pivot and partitioning elements around it.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [10, 7, 8, 9, 1, 5]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[1, 5, 7, 8, 9, 10]</code></div>
+              <p class="explain">Partition around a pivot so smaller elements go left and larger go right, then recursively sort both sides.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Already sorted array — worst case O(n²) with a naive pivot choice (e.g. always first element).</li>
+<li>Array with all identical elements.</li>
+<li>Reverse sorted array.</li>
+<li>Random pivot selection to avoid worst-case behavior.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sort-an-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="sort an array of 0s, 1s, and 2s (dutch national flag)">
+          <summary>
+            <span class="q-index">9.5</span>
+            <span class="q-title">Sort an Array of 0s, 1s, and 2s (Dutch National Flag)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Sort an array containing only 0s, 1s, and 2s in a single pass, in place.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 0, 2, 1, 1, 0]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[0, 0, 1, 1, 2, 2]</code></div>
+              <p class="explain">Use three pointers (low, mid, high) to partition the array into three sections in one pass.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Array with only one distinct value, e.g. all 0s.</li>
+<li>Already sorted array.</li>
+<li>Array containing only two of the three values, e.g. only 0s and 2s.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sort-colors/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find kth largest element (via sorting)">
+          <summary>
+            <span class="q-index">9.6</span>
+            <span class="q-title">Find Kth Largest Element (via Sorting)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array and integer k, find the kth largest element (not the kth distinct element).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [3, 2, 1, 5, 6, 4], k = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5</code></div>
+              <p class="explain">Sort the array descending and pick index k-1 — or use a min-heap of size k for better efficiency.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k = 1 — answer is simply the maximum.</li>
+<li>k equals the array length — answer is the minimum.</li>
+<li>Array with duplicate values.</li>
+<li>k larger than the array length — invalid input.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-10" data-sec="10">
+      <div class="section-head">
+        <h2><span class="sec-num">10</span>Binary Search</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">7 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="classic binary search">
+          <summary>
+            <span class="q-index">10.1</span>
+            <span class="q-title">Classic Binary Search</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array and a target, return its index (or -1 if not found), both iteratively and recursively.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [-1, 0, 3, 5, 9, 12], target = 9</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>4</code></div>
+              <p class="explain">Repeatedly halve the search space by comparing the target to the middle element.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Target not present in the array.</li>
+<li>Empty array.</li>
+<li>Target is the first or last element.</li>
+<li>Array with duplicate values (which occurrence gets returned).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/binary-search/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find first and last position of an element">
+          <summary>
+            <span class="q-index">10.2</span>
+            <span class="q-title">Find First and Last Position of an Element</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array with duplicates, find the first and last index of a given target value.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [5,7,7,8,8,10], target = 8</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[3, 4]</code></div>
+              <p class="explain">Run two binary searches: one biased to find the leftmost occurrence, one for the rightmost.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Target not present — return [-1, -1].</li>
+<li>Target appears only once.</li>
+<li>Target appears at every index (whole array is the target value).</li>
+<li>Empty array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="search in a rotated sorted array">
+          <summary>
+            <span class="q-index">10.3</span>
+            <span class="q-title">Search in a Rotated Sorted Array</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array that has been rotated at an unknown pivot, search for a target in O(log n).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [4,5,6,7,0,1,2], target = 0</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>4</code></div>
+              <p class="explain">At each step, determine which half is properly sorted, then check if the target lies within that half&#x27;s range.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Array is not rotated at all (fully sorted).</li>
+<li>Target is the pivot point itself.</li>
+<li>Array with a single element.</li>
+<li>Target not present in the array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find peak element">
+          <summary>
+            <span class="q-index">10.4</span>
+            <span class="q-title">Find Peak Element</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">A peak element is greater than its neighbors. Find any peak element&#x27;s index in O(log n).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 2, 3, 1]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2  (value 3)</code></div>
+              <p class="explain">Move toward the side with the larger neighbor — a peak is guaranteed to exist in that direction.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Single-element array — trivially a peak.</li>
+<li>Strictly increasing array — the last element is the peak.</li>
+<li>Strictly decreasing array — the first element is the peak.</li>
+<li>Multiple peaks exist — any valid one is acceptable.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="square root of a number (binary search)">
+          <summary>
+            <span class="q-index">10.5</span>
+            <span class="q-title">Square Root of a Number (Binary Search)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Compute the integer square root of a non-negative number without using the built-in sqrt function.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>x = 8</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2</code></div>
+              <p class="explain">Binary search on the answer space [0, x], checking mid*mid against x.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>x = 0 or x = 1 — trivial answers.</li>
+<li>x is a perfect square, e.g. x = 16 → 4.</li>
+<li>Very large x — watch for overflow in languages without arbitrary precision ints.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sqrtx/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find the smallest divisor given a threshold">
+          <summary>
+            <span class="q-index">10.6</span>
+            <span class="q-title">Find the Smallest Divisor Given a Threshold</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the smallest divisor such that the sum of array elements divided by it (rounded up) is &lt;= threshold.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1,2,5,9], threshold = 6</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5</code></div>
+              <p class="explain">Binary search on the divisor value from 1 to max(nums), checking feasibility at each mid.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>threshold equals the array length — the answer is max(nums).</li>
+<li>Single-element array.</li>
+<li>Very large threshold — smallest divisor could be 1.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="median of two sorted arrays">
+          <summary>
+            <span class="q-index">10.7</span>
+            <span class="q-title">Median of Two Sorted Arrays</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given two sorted arrays of possibly different sizes, find the median of the combined array in O(log(min(m,n))).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums1 = [1, 3], nums2 = [2]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2.0</code></div>
+              <p class="explain">Binary search on the smaller array to find a correct partition point across both arrays.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>One array is empty.</li>
+<li>Arrays of very different sizes.</li>
+<li>Combined array has even length (median is the average of two middle values).</li>
+<li>Duplicate values across both arrays.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/median-of-two-sorted-arrays/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-11" data-sec="11">
+      <div class="section-head">
+        <h2><span class="sec-num">11</span>Trees (Binary Tree / BST)</h2>
+        <span class="badge" style="--badge-color:#c62828">Medium-Hard</span>
+        <span class="sec-count">9 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="inorder, preorder, postorder traversal">
+          <summary>
+            <span class="q-index">11.1</span>
+            <span class="q-title">Inorder, Preorder, Postorder Traversal</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Implement all three depth-first traversals of a binary tree, both recursively and iteratively (using a stack).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree:      1\n            \\\n             2\n            /\n           3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>Inorder: [1,3,2], Preorder: [1,2,3], Postorder: [3,2,1]</code></div>
+              <p class="explain">Inorder = left, node, right. Preorder = node, left, right. Postorder = left, right, node.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree (root is None) — output is [].</li>
+<li>Single-node tree.</li>
+<li>Skewed tree (all left or all right children only).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/binary-tree-inorder-traversal/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="level order traversal (bfs)">
+          <summary>
+            <span class="q-index">11.2</span>
+            <span class="q-title">Level Order Traversal (BFS)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Return the level-order traversal of a binary tree&#x27;s node values (values grouped by level).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [3,9,20,null,null,15,7]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[3],[9,20],[15,7]]</code></div>
+              <p class="explain">Use a queue; process all nodes at the current level before moving to the next.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — output is [].</li>
+<li>Single-node tree — output is [[val]].</li>
+<li>Unbalanced tree with nodes only on one side.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="height / depth of a binary tree">
+          <summary>
+            <span class="q-index">11.3</span>
+            <span class="q-title">Height / Depth of a Binary Tree</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the maximum depth (number of nodes on the longest root-to-leaf path) of a binary tree.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [3,9,20,null,null,15,7]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">depth(node) = 1 + max(depth(left), depth(right)), with depth(None) = 0.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — depth is 0.</li>
+<li>Single-node tree — depth is 1.</li>
+<li>Completely skewed tree (essentially a linked list).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="check if a tree is balanced">
+          <summary>
+            <span class="q-index">11.4</span>
+            <span class="q-title">Check if a Tree is Balanced</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Determine whether a binary tree is height-balanced (depths of two subtrees of any node never differ by more than 1).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [3,9,20,null,null,15,7]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Recursively compute height while checking the balance condition at every node, short-circuiting on imbalance.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — considered balanced.</li>
+<li>Single-node tree — always balanced.</li>
+<li>A deeply skewed tree that is clearly unbalanced.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/balanced-binary-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="lowest common ancestor (lca) in a bst">
+          <summary>
+            <span class="q-index">11.5</span>
+            <span class="q-title">Lowest Common Ancestor (LCA) in a BST</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a BST and two nodes, find their lowest common ancestor, using BST ordering properties.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>BST root = 6, p = 2, q = 8</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>6</code></div>
+              <p class="explain">Starting at the root, move left if both p and q are smaller, right if both are larger, else the current node is the LCA.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>One node is an ancestor of the other, e.g. p = 2, q = 4 where 4 is in 2&#x27;s subtree.</li>
+<li>p or q equals the root.</li>
+<li>p and q are the same node.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="validate a binary search tree">
+          <summary>
+            <span class="q-index">11.6</span>
+            <span class="q-title">Validate a Binary Search Tree</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Determine whether a binary tree is a valid BST (all left descendants &lt; node &lt; all right descendants).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [5,1,4,null,null,3,6]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>False</code></div>
+              <p class="explain">Pass down a valid (min, max) range for each node and check the node&#x27;s value falls within it, not just compare to immediate children.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — considered valid.</li>
+<li>Tree with duplicate values (BST typically requires strict inequality).</li>
+<li>A tree that looks locally correct at each node but is invalid globally (classic trap).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/validate-binary-search-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="diameter of a binary tree">
+          <summary>
+            <span class="q-index">11.7</span>
+            <span class="q-title">Diameter of a Binary Tree</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the length of the longest path between any two nodes in a binary tree (may or may not pass through the root).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [1,2,3,4,5]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">At each node, the longest path through it is leftHeight + rightHeight; track the maximum across all nodes.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — diameter is 0.</li>
+<li>Single-node tree — diameter is 0.</li>
+<li>The longest path doesn&#x27;t pass through the root at all.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/diameter-of-binary-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="convert sorted array to balanced bst">
+          <summary>
+            <span class="q-index">11.8</span>
+            <span class="q-title">Convert Sorted Array to Balanced BST</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a sorted array, construct a height-balanced binary search tree from it.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [-10, -3, 0, 5, 9]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>A balanced BST, e.g. root 0, left subtree [-10,-3], right subtree [5,9]</code></div>
+              <p class="explain">Recursively pick the middle element as the root, then recurse on the left and right halves.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array — returns None.</li>
+<li>Single-element array — a single-node tree.</li>
+<li>Even-length array — decide whether to pick the lower or upper middle as root.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="zigzag level order traversal">
+          <summary>
+            <span class="q-index">11.9</span>
+            <span class="q-title">Zigzag Level Order Traversal</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Return the level-order traversal of a binary tree, alternating left-to-right and right-to-left per level.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>tree: [3,9,20,null,null,15,7]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[3],[20,9],[15,7]]</code></div>
+              <p class="explain">Do a normal BFS level order, then reverse the order of values on every other level.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty tree — output is [].</li>
+<li>Single-node tree — output is [[val]].</li>
+<li>Tree with only one level having more than one node.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-12" data-sec="12">
+      <div class="section-head">
+        <h2><span class="sec-num">12</span>Heaps</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">6 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="implement min-heap / max-heap from scratch">
+          <summary>
+            <span class="q-index">12.1</span>
+            <span class="q-title">Implement Min-Heap / Max-Heap From Scratch</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Implement a binary heap (array-based) supporting insert and extract-min/max without using heapq.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>insert(5), insert(3), insert(8), extractMin()</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>extractMin() returns 3</code></div>
+              <p class="explain">Maintain the heap property by &#x27;bubbling up&#x27; on insert and &#x27;sifting down&#x27; on extraction.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Extracting from an empty heap.</li>
+<li>Inserting duplicate values.</li>
+<li>Heap with a single element.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="kth largest element in an array">
+          <summary>
+            <span class="q-index">12.2</span>
+            <span class="q-title">Kth Largest Element in an Array</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the kth largest element in an unsorted array using a min-heap of size k.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [3, 2, 1, 5, 6, 4], k = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5</code></div>
+              <p class="explain">Maintain a min-heap of size k; if the heap grows beyond k, pop the smallest — the root ends up being the kth largest.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k = 1 — equivalent to finding the max.</li>
+<li>k equals array length — equivalent to finding the min.</li>
+<li>Array with duplicate values.</li>
+<li>k larger than array length — invalid input.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="merge k sorted lists">
+          <summary>
+            <span class="q-index">12.3</span>
+            <span class="q-title">Merge K Sorted Lists</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Merge k sorted linked lists into one sorted linked list using a min-heap.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>lists = [[1,4,5],[1,3,4],[2,6]]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[1,1,2,3,4,4,5,6]</code></div>
+              <p class="explain">Push the head of each list into a min-heap; repeatedly pop the smallest and push its successor.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Some lists are empty.</li>
+<li>All lists are empty — result is an empty list.</li>
+<li>Only one list provided.</li>
+<li>Lists with duplicate values across them.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/merge-k-sorted-lists/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="top k frequent elements">
+          <summary>
+            <span class="q-index">12.4</span>
+            <span class="q-title">Top K Frequent Elements</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, return the k most frequent elements using a heap.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1,1,1,2,2,3], k = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[1, 2]</code></div>
+              <p class="explain">Count frequencies with a dict, then use a heap of size k (or heapq.nlargest) on the frequency values.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k equals the number of distinct elements — return all of them.</li>
+<li>Multiple elements tie in frequency — any valid selection meeting the tie is typically acceptable.</li>
+<li>Single distinct element repeated many times.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/top-k-frequent-elements/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="find median from a data stream">
+          <summary>
+            <span class="q-index">12.5</span>
+            <span class="q-title">Find Median From a Data Stream</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Design a structure that supports adding numbers one at a time and finding the median efficiently, using two heaps.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>addNum(1), addNum(2), findMedian(), addNum(3), findMedian()</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>1.5, then 2</code></div>
+              <p class="explain">Maintain a max-heap for the lower half and a min-heap for the upper half, keeping them balanced in size.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Only one number has been added so far.</li>
+<li>Even vs odd total count of numbers (affects whether median is one value or an average).</li>
+<li>Duplicate numbers added multiple times.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-median-from-data-stream/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="sort a nearly sorted (k-sorted) array">
+          <summary>
+            <span class="q-index">12.6</span>
+            <span class="q-title">Sort a Nearly Sorted (K-Sorted) Array</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array where each element is at most k positions from its sorted position, sort it efficiently using a heap.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [6,5,3,2,8,10,9], k = 3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[2,3,5,6,8,9,10]</code></div>
+              <p class="explain">Maintain a min-heap of size k+1; repeatedly pop the smallest and add the next incoming element.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>k = 0 — array is already sorted.</li>
+<li>k equal to or larger than the array length — behaves like a full heap sort.</li>
+<li>Array with duplicate values.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-13" data-sec="13">
+      <div class="section-head">
+        <h2><span class="sec-num">13</span>Backtracking</h2>
+        <span class="badge" style="--badge-color:#c62828">Hard</span>
+        <span class="sec-count">8 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="print all permutations of a string">
+          <summary>
+            <span class="q-index">13.1</span>
+            <span class="q-title">Print All Permutations of a String</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Generate all permutations of a given string or array of distinct elements.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;abc&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[&quot;abc&quot;,&quot;acb&quot;,&quot;bac&quot;,&quot;bca&quot;,&quot;cab&quot;,&quot;cba&quot;]</code></div>
+              <p class="explain">At each position, try each unused character, recurse, then backtrack (undo the choice) before trying the next.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty string — output is [&quot;&quot;].</li>
+<li>Single character string.</li>
+<li>String with duplicate characters — decide whether duplicate permutations should be filtered out.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/permutations/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="print all subsets / power set">
+          <summary>
+            <span class="q-index">13.2</span>
+            <span class="q-title">Print All Subsets / Power Set</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Generate all subsets of a set using backtracking (include/exclude decision at each element).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 2, 3]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]</code></div>
+              <p class="explain">At each index, recurse once including the current element and once excluding it, backtracking between the two.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty input array — output is [[]].</li>
+<li>Duplicate elements in input — decide whether to dedupe the resulting subsets.</li>
+<li>Single-element array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/subsets/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="n-queens problem">
+          <summary>
+            <span class="q-index">13.3</span>
+            <span class="q-title">N-Queens Problem</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Place n queens on an n×n chessboard so that no two queens attack each other. Return all valid arrangements.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 4</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2 solutions, e.g. [&quot;.Q..&quot;,&quot;...Q&quot;,&quot;Q...&quot;,&quot;..Q.&quot;]</code></div>
+              <p class="explain">Place queens row by row, backtracking whenever a placement conflicts on a column or diagonal.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 1 — a single trivial solution.</li>
+<li>n = 2 or n = 3 — no valid solution exists.</li>
+<li>Large n — solution count grows quickly, so pruning efficiency matters.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/n-queens/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="sudoku solver">
+          <summary>
+            <span class="q-index">13.4</span>
+            <span class="q-title">Sudoku Solver</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Solve a 9x9 Sudoku puzzle by filling empty cells so that every row, column, and 3x3 box contains 1-9 exactly once.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>A partially filled 9x9 grid with &#x27;.&#x27; for empty cells</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>The fully solved grid</code></div>
+              <p class="explain">Try digits 1-9 in each empty cell, backtracking whenever a digit violates row/column/box constraints.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>A puzzle with a unique solution vs. multiple valid solutions.</li>
+<li>An already-solved grid passed in (no empty cells).</li>
+<li>An invalid/unsolvable puzzle.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/sudoku-solver/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="word search in a grid">
+          <summary>
+            <span class="q-index">13.5</span>
+            <span class="q-title">Word Search in a Grid</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a 2D grid of letters and a word, determine if the word can be formed by sequentially adjacent cells.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>board = [[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;E&quot;],[&quot;S&quot;,&quot;F&quot;,&quot;C&quot;,&quot;S&quot;],[&quot;A&quot;,&quot;D&quot;,&quot;E&quot;,&quot;E&quot;]], word = &quot;ABCCED&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">DFS from each matching starting cell, marking visited cells temporarily and backtracking (unmarking) after each path.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Word longer than the total number of cells in the grid — impossible.</li>
+<li>Word uses the same cell twice — not allowed, must track visited cells per path.</li>
+<li>Single-letter word.</li>
+<li>Word not present anywhere in the grid.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/word-search/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="combination sum">
+          <summary>
+            <span class="q-index">13.6</span>
+            <span class="q-title">Combination Sum</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array of distinct candidates and a target, find all unique combinations that sum to the target (numbers reusable).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>candidates = [2,3,6,7], target = 7</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[[2,2,3],[7]]</code></div>
+              <p class="explain">Recurse by trying each candidate (allowing reuse), subtracting from the remaining target, and backtracking.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>No combination sums to the target — return [].</li>
+<li>Target is 0 — the only valid combination is the empty one (usually excluded).</li>
+<li>A candidate is larger than the target itself — must be skipped.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/combination-sum/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="rat in a maze">
+          <summary>
+            <span class="q-index">13.7</span>
+            <span class="q-title">Rat in a Maze</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an n×n maze with 0s (blocked) and 1s (open), find all paths from top-left to bottom-right.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>maze = [[1,0,0,0],[1,1,0,1],[0,1,0,0],[1,1,1,1]]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[&#x27;DDRDRR&#x27;]  (down/right style path notation)</code></div>
+              <p class="explain">DFS from the start cell in each allowed direction, marking cells visited and backtracking on dead ends.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Start or end cell is blocked — no path exists.</li>
+<li>A maze with no valid path at all.</li>
+<li>A maze that is fully open (many valid paths).</li></ul>
+            </div>
+            <a class="lc-link" href="https://www.geeksforgeeks.org/problems/rat-in-a-maze-problem/1" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="generate valid parentheses">
+          <summary>
+            <span class="q-index">13.8</span>
+            <span class="q-title">Generate Valid Parentheses</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given n pairs of parentheses, generate all combinations of well-formed parentheses.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 3</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[&quot;((()))&quot;,&quot;(()())&quot;,&quot;(())()&quot;,&quot;()(())&quot;,&quot;()()()&quot;]</code></div>
+              <p class="explain">Track counts of open and close brackets used; only add &#x27;)&#x27; if close &lt; open, only add &#x27;(&#x27; if open &lt; n.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 — output is [&quot;&quot;].</li>
+<li>n = 1 — output is [&quot;()&quot;].</li>
+<li>Large n — the number of valid combinations grows as the nth Catalan number.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/generate-parentheses/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-14" data-sec="14">
+      <div class="section-head">
+        <h2><span class="sec-num">14</span>Graphs</h2>
+        <span class="badge" style="--badge-color:#c62828">Hard</span>
+        <span class="sec-count">9 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="bfs traversal of a graph">
+          <summary>
+            <span class="q-index">14.1</span>
+            <span class="q-title">BFS Traversal of a Graph</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Perform a breadth-first traversal of a graph starting from a given node.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph = {0:[1,2], 1:[2], 2:[0,3], 3:[3]}, start = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[2, 0, 3, 1]</code></div>
+              <p class="explain">Use a queue and a visited set; enqueue unvisited neighbors as each node is processed.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Disconnected graph — nodes unreachable from start are simply not visited.</li>
+<li>Graph with self-loops, e.g. node 3 pointing to itself.</li>
+<li>Single-node graph.</li>
+<li>Starting node not present in the graph.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/employee-importance/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="dfs traversal of a graph">
+          <summary>
+            <span class="q-index">14.2</span>
+            <span class="q-title">DFS Traversal of a Graph</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Perform a depth-first traversal of a graph starting from a given node, both recursively and iteratively (with a stack).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph = {0:[1,2], 1:[2], 2:[0,3], 3:[3]}, start = 2</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[2, 0, 1, 3]</code></div>
+              <p class="explain">Visit a node, mark it visited, then recurse (or push to a stack) into each unvisited neighbor.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Cyclic graph — must track visited nodes to avoid infinite recursion.</li>
+<li>Disconnected graph.</li>
+<li>Directed vs undirected edge handling.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/find-if-path-exists-in-graph/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="detect a cycle in a directed graph">
+          <summary>
+            <span class="q-index">14.3</span>
+            <span class="q-title">Detect a Cycle in a Directed Graph</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Determine whether a directed graph contains a cycle.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph = {0:[1], 1:[2], 2:[0]}</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">DFS with a &#x27;currently in recursion stack&#x27; set; a cycle exists if you reach a node still on that stack.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Self-loop — a node pointing to itself is a cycle.</li>
+<li>Disconnected graph with a cycle in one component only.</li>
+<li>Graph with no edges at all — no cycle.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/course-schedule/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="detect a cycle in an undirected graph">
+          <summary>
+            <span class="q-index">14.4</span>
+            <span class="q-title">Detect a Cycle in an Undirected Graph</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Determine whether an undirected graph contains a cycle.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph = {0:[1,2], 1:[0,2], 2:[0,1]}</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">DFS tracking the parent node; finding a visited neighbor that isn&#x27;t the parent indicates a cycle. Union-Find is an alternative.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Graph is a tree (n-1 edges, no cycle) — should return False.</li>
+<li>Disconnected components, only one of which has a cycle.</li>
+<li>Graph with a duplicate/parallel edge between two nodes.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/graph-valid-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="topological sort">
+          <summary>
+            <span class="q-index">14.5</span>
+            <span class="q-title">Topological Sort</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a directed acyclic graph (DAG), return a valid ordering of nodes respecting all edge dependencies.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph = {5:[2,0], 4:[0,1], 2:[3], 3:[1], 0:[], 1:[]}</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[5, 4, 2, 3, 1, 0]  (one valid ordering)</code></div>
+              <p class="explain">Use Kahn&#x27;s algorithm (BFS with in-degree counting) or DFS with a finish-time stack.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Graph contains a cycle — topological sort is impossible, must be detected.</li>
+<li>Multiple valid orderings exist — any one satisfying all edges is acceptable.</li>
+<li>Disconnected DAG components.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/course-schedule-ii/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="number of islands (grid bfs/dfs)">
+          <summary>
+            <span class="q-index">14.6</span>
+            <span class="q-title">Number of Islands (Grid BFS/DFS)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a 2D grid of &#x27;1&#x27; (land) and &#x27;0&#x27; (water), count the number of islands (connected groups of land).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>grid = [[&#x27;1&#x27;,&#x27;1&#x27;,&#x27;0&#x27;],[&#x27;1&#x27;,&#x27;0&#x27;,&#x27;0&#x27;],[&#x27;0&#x27;,&#x27;0&#x27;,&#x27;1&#x27;]]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>2</code></div>
+              <p class="explain">Scan every cell; on an unvisited &#x27;1&#x27;, run BFS/DFS to mark the whole connected island as visited, then increment the count.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Grid with no land at all — answer is 0.</li>
+<li>Grid that is entirely land — answer is 1.</li>
+<li>Diagonal adjacency is usually NOT counted as connected — only up/down/left/right.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/number-of-islands/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="dijkstra&#x27;s shortest path algorithm">
+          <summary>
+            <span class="q-index">14.7</span>
+            <span class="q-title">Dijkstra&#x27;s Shortest Path Algorithm</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a weighted graph with non-negative edges, find the shortest path from a source to all other nodes.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>graph with edges (0-1, w=4), (0-2, w=1), (2-1, w=2), source = 0</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>dist = {0:0, 1:3, 2:1}</code></div>
+              <p class="explain">Use a min-heap of (distance, node); always expand the closest unvisited node, relaxing its neighbors&#x27; distances.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Negative edge weights — Dijkstra&#x27;s is invalid here (needs Bellman-Ford instead).</li>
+<li>Disconnected graph — unreachable nodes have distance infinity.</li>
+<li>Multiple edges between the same pair of nodes (keep the smaller weight).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/network-delay-time/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="union-find (disjoint set) — detect cycle">
+          <summary>
+            <span class="q-index">14.8</span>
+            <span class="q-title">Union-Find (Disjoint Set) — Detect Cycle</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Implement Union-Find with path compression and union by rank, and use it to detect a cycle while adding edges.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>edges = [[0,1],[1,2],[2,0]]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>Cycle detected at edge [2,0]</code></div>
+              <p class="explain">For each edge, if both endpoints already share the same root/parent, adding it would create a cycle.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Self-loop edge, e.g. [0, 0] — immediately a cycle.</li>
+<li>Adding the same edge twice.</li>
+<li>Fully connected graph with no cycles (a tree, exactly n-1 edges).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/redundant-connection/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="clone a graph">
+          <summary>
+            <span class="q-index">14.9</span>
+            <span class="q-title">Clone a Graph</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>adjList = [[2,4],[1,3],[2,4],[1,3]]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>An identical, fully independent cloned graph</code></div>
+              <p class="explain">Use DFS/BFS with a dict mapping original nodes to their clones, to avoid infinite loops on cycles.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Graph with a single node and no neighbors.</li>
+<li>Empty graph (None input).</li>
+<li>Graph with a self-referencing/cyclic structure.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/clone-graph/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-15" data-sec="15">
+      <div class="section-head">
+        <h2><span class="sec-num">15</span>Dynamic Programming</h2>
+        <span class="badge" style="--badge-color:#c62828">Hard</span>
+        <span class="sec-count">10 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="climbing stairs">
+          <summary>
+            <span class="q-index">15.1</span>
+            <span class="q-title">Climbing Stairs</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">You can climb 1 or 2 steps at a time. Given n stairs, count the number of distinct ways to reach the top.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>n = 4</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>5</code></div>
+              <p class="explain">dp[n] = dp[n-1] + dp[n-2] — this is exactly the Fibonacci recurrence, with dp[1]=1, dp[2]=2.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>n = 0 — usually defined as 1 way (do nothing).</li>
+<li>n = 1 — only 1 way.</li>
+<li>Large n — use O(1) space with two rolling variables instead of a full array.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/climbing-stairs/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="house robber">
+          <summary>
+            <span class="q-index">15.2</span>
+            <span class="q-title">House Robber</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given houses with money amounts, find the max amount you can rob without robbing two adjacent houses.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 7, 9, 3, 1]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>12</code></div>
+              <p class="explain">dp[i] = max(dp[i-1], dp[i-2] + nums[i]) — either skip this house or rob it and add to the best two houses back.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty array — answer is 0.</li>
+<li>Single house — rob it, answer is nums[0].</li>
+<li>Two houses — answer is the larger of the two.</li>
+<li>All houses have the same value.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/house-robber/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest common subsequence (lcs)">
+          <summary>
+            <span class="q-index">15.3</span>
+            <span class="q-title">Longest Common Subsequence (LCS)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given two strings, find the length of their longest common subsequence (not necessarily contiguous).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>text1 = &quot;abcde&quot;, text2 = &quot;ace&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">Build a 2D DP table where dp[i][j] = dp[i-1][j-1]+1 if characters match, else max(dp[i-1][j], dp[i][j-1]).</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>One string is empty — LCS length is 0.</li>
+<li>No common characters at all.</li>
+<li>Strings are identical — LCS equals the string length.</li>
+<li>One string is fully a subsequence of the other.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-common-subsequence/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest increasing subsequence (lis)">
+          <summary>
+            <span class="q-index">15.4</span>
+            <span class="q-title">Longest Increasing Subsequence (LIS)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, find the length of the longest strictly increasing subsequence.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [10, 9, 2, 5, 3, 7, 101, 18]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>4</code></div>
+              <p class="explain">dp[i] = length of the LIS ending at index i; for O(n log n), maintain a &#x27;tails&#x27; array with binary search.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Strictly decreasing array — answer is 1 (any single element).</li>
+<li>Array with all equal elements — answer is 1 (strictly increasing required).</li>
+<li>Already sorted (increasing) array — answer equals the array length.</li>
+<li>Empty array — answer is 0.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="0/1 knapsack">
+          <summary>
+            <span class="q-index">15.5</span>
+            <span class="q-title">0/1 Knapsack</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given item weights, values, and a capacity, maximize total value without exceeding capacity (each item used at most once).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>weights=[1,3,4,5], values=[1,4,5,7], capacity=7</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>9</code></div>
+              <p class="explain">dp[i][w] = max(exclude item i, include item i if it fits) — build a 2D table over items and capacities.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Capacity is 0 — answer is 0.</li>
+<li>A single item heavier than the total capacity — must be excluded.</li>
+<li>All items have zero weight (fit everything, maximize sum of values).</li>
+<li>Only one item available.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="coin change (minimum coins)">
+          <summary>
+            <span class="q-index">15.6</span>
+            <span class="q-title">Coin Change (Minimum Coins)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given coin denominations and a target amount, find the minimum number of coins needed (or -1 if impossible).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>coins = [1, 2, 5], amount = 11</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3  (5 + 5 + 1)</code></div>
+              <p class="explain">dp[a] = min(dp[a - coin] + 1) for every coin that fits, with dp[0] = 0 as the base case.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Amount = 0 — answer is 0 coins.</li>
+<li>Amount cannot be formed with the given coins, e.g. coins=[2], amount=3 — return -1.</li>
+<li>A coin equal to the amount itself — answer is 1.</li>
+<li>Duplicate coin denominations in the input.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/coin-change/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="edit distance">
+          <summary>
+            <span class="q-index">15.7</span>
+            <span class="q-title">Edit Distance</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given two strings, find the minimum number of insert/delete/replace operations to convert one into the other.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>word1 = &quot;horse&quot;, word2 = &quot;ros&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">dp[i][j] = dp[i-1][j-1] if characters match, else 1 + min(insert, delete, replace) options.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>One string is empty — answer equals the length of the other string.</li>
+<li>Both strings are identical — answer is 0.</li>
+<li>Strings share no characters at all.</li>
+<li>Strings differ by just one character.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/edit-distance/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="maximum product subarray">
+          <summary>
+            <span class="q-index">15.8</span>
+            <span class="q-title">Maximum Product Subarray</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, find the contiguous subarray with the largest product.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [2, 3, -2, 4]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>6</code></div>
+              <p class="explain">Track both running max and running min at each index, since a negative number can flip min into max.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Array contains a 0 — resets the running product (0 acts as a hard break).</li>
+<li>Array with an even count of negative numbers, e.g. [-2,-3,4] — product may span the whole array.</li>
+<li>Single-element array (could be negative).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/maximum-product-subarray/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="partition equal subset sum">
+          <summary>
+            <span class="q-index">15.9</span>
+            <span class="q-title">Partition Equal Subset Sum</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given an array, determine if it can be split into two subsets with equal sum.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>nums = [1, 5, 11, 5]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True</code></div>
+              <p class="explain">Equivalent to a subset-sum problem: check if a subset sums to totalSum / 2, using a 1D boolean DP array.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Total sum is odd — immediately impossible, return False.</li>
+<li>Array with a single element — impossible unless that element is 0.</li>
+<li>Array where every element is 0 — trivially True (both subsets sum to 0).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest palindromic substring">
+          <summary>
+            <span class="q-index">15.10</span>
+            <span class="q-title">Longest Palindromic Substring</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a string, find the longest substring that is a palindrome.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>s = &quot;babad&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;bab&quot;  (or &quot;aba&quot;, both valid)</code></div>
+              <p class="explain">Expand around each center (both odd and even length cases), or use a 2D DP table of is-palindrome(i, j).</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Empty string — return &quot;&quot;.</li>
+<li>Single character string — the whole string is the answer.</li>
+<li>Entire string is a palindrome.</li>
+<li>Multiple valid answers of the same max length exist.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-16" data-sec="16">
+      <div class="section-head">
+        <h2><span class="sec-num">16</span>Greedy Algorithms</h2>
+        <span class="badge" style="--badge-color:#e65100">Medium</span>
+        <span class="sec-count">5 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="activity selection problem">
+          <summary>
+            <span class="q-index">16.1</span>
+            <span class="q-title">Activity Selection Problem</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given start and end times of activities, select the maximum number of non-overlapping activities.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>activities = [(1,4),(3,5),(0,6),(5,7),(3,9),(5,9),(6,10),(8,11),(8,12),(2,14),(12,16)]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>4 activities selected, e.g. (1,4),(5,7),(8,11),(12,16)</code></div>
+              <p class="explain">Sort by end time, greedily pick the next activity whose start time is &gt;= the last picked activity&#x27;s end time.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>All activities overlap with each other — only 1 can be selected.</li>
+<li>No activities overlap at all — all can be selected.</li>
+<li>Activities with identical start and end times.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="fractional knapsack">
+          <summary>
+            <span class="q-index">16.2</span>
+            <span class="q-title">Fractional Knapsack</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given item weights, values, and a capacity, maximize value where items can be broken into fractions.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>items=[(60,10),(100,20),(120,30)] (value,weight), capacity=50</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>240.0</code></div>
+              <p class="explain">Sort items by value/weight ratio descending, greedily take as much of the highest-ratio item as fits.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Capacity is 0 — answer is 0.</li>
+<li>Capacity exceeds the total weight of all items — take everything.</li>
+<li>All items have the same value-to-weight ratio.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="job sequencing with deadlines">
+          <summary>
+            <span class="q-index">16.3</span>
+            <span class="q-title">Job Sequencing With Deadlines</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given jobs with deadlines and profits, schedule jobs (one per time slot) to maximize total profit.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>jobs=[(J1,4,20),(J2,1,10),(J3,1,40),(J4,1,30)] (id,deadline,profit)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>Profit = 60, jobs = [J1, J3]</code></div>
+              <p class="explain">Sort jobs by profit descending; for each job, place it in the latest available free slot at or before its deadline.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Multiple jobs share the same deadline — profit ordering decides priority.</li>
+<li>More jobs than available time slots — lowest-profit jobs get dropped.</li>
+<li>A job with a deadline of 0 or negative — can never be scheduled.</li></ul>
+            </div>
+            <span class="lc-link lc-none">Custom / implement-from-scratch exercise</span>
+          </div>
+        </details>
+        <details class="qcard" data-title="minimum number of platforms (interval scheduling)">
+          <summary>
+            <span class="q-index">16.4</span>
+            <span class="q-title">Minimum Number of Platforms (Interval Scheduling)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given train arrival and departure times, find the minimum number of platforms needed so no train waits.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>arr=[900,940,950,1100,1500,1800], dep=[910,1200,1120,1130,1900,2000]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">Sort arrivals and departures separately; sweep through events, incrementing on an arrival and decrementing on a departure, tracking the max concurrent count.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>All trains arrive and depart at non-overlapping times — only 1 platform needed.</li>
+<li>A train&#x27;s arrival time equals another&#x27;s departure time — decide if that counts as an overlap.</li>
+<li>All trains arrive at the exact same time — needs a platform per train.</li></ul>
+            </div>
+            <a class="lc-link" href="https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="gas station">
+          <summary>
+            <span class="q-index">16.5</span>
+            <span class="q-title">Gas Station</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given gas and cost arrays for a circular route, find the starting station index to complete the circuit (or -1).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>gas = [1,2,3,4,5], cost = [3,4,5,1,2]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>3</code></div>
+              <p class="explain">If total gas &gt;= total cost a solution exists; track a running tank, and whenever it goes negative, reset the candidate start to the next station.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Total gas is less than total cost — no valid starting point exists, return -1.</li>
+<li>Single station — trivially the start if gas &gt;= cost there.</li>
+<li>Multiple stations could work — only one is guaranteed unique when a solution exists.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/gas-station/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+    <section class="section" id="sec-17" data-sec="17">
+      <div class="section-head">
+        <h2><span class="sec-num">17</span>Tries</h2>
+        <span class="badge" style="--badge-color:#6a1b9a">Medium (optional / later)</span>
+        <span class="sec-count">4 questions</span>
+      </div>
+      <div class="qlist">
+        <details class="qcard" data-title="implement a trie (insert, search, startswith)">
+          <summary>
+            <span class="q-index">17.1</span>
+            <span class="q-title">Implement a Trie (Insert, Search, StartsWith)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Design a trie (prefix tree) supporting insert, search (exact word), and startsWith (prefix check).</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>insert(&quot;apple&quot;), search(&quot;apple&quot;), search(&quot;app&quot;), startsWith(&quot;app&quot;)</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>True, False, True</code></div>
+              <p class="explain">Each node holds a dict of children characters and a flag marking the end of a valid word.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Inserting an empty string.</li>
+<li>Searching for a prefix that was never inserted as a complete word.</li>
+<li>Inserting the same word multiple times.</li>
+<li>Case sensitivity (&#x27;Apple&#x27; vs &#x27;apple&#x27;).</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="word search ii (trie + backtracking)">
+          <summary>
+            <span class="q-index">17.2</span>
+            <span class="q-title">Word Search II (Trie + Backtracking)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a grid of letters and a list of words, find all words present in the grid using a trie for efficient search.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>board=[[&quot;o&quot;,&quot;a&quot;,&quot;a&quot;,&quot;n&quot;],[&quot;e&quot;,&quot;t&quot;,&quot;a&quot;,&quot;e&quot;],[&quot;i&quot;,&quot;h&quot;,&quot;k&quot;,&quot;r&quot;],[&quot;i&quot;,&quot;f&quot;,&quot;l&quot;,&quot;v&quot;]], words=[&quot;oath&quot;,&quot;pea&quot;,&quot;eat&quot;,&quot;rain&quot;]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>[&quot;eat&quot;,&quot;oath&quot;]</code></div>
+              <p class="explain">Build a trie of all words, then DFS from each grid cell, pruning branches that don&#x27;t exist in the trie.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>A word in the list that isn&#x27;t present anywhere in the grid.</li>
+<li>Words that share a common prefix, e.g. &#x27;eat&#x27; and &#x27;eats&#x27;.</li>
+<li>Duplicate words in the input list.</li>
+<li>A word longer than the total number of cells in the grid.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/word-search-ii/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="longest word in dictionary (built letter by letter)">
+          <summary>
+            <span class="q-index">17.3</span>
+            <span class="q-title">Longest Word in Dictionary (Built Letter by Letter)</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Find the longest word that can be built one character at a time by other words in the given word list.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>words = [&quot;w&quot;,&quot;wo&quot;,&quot;wor&quot;,&quot;worl&quot;,&quot;world&quot;]</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;world&quot;</code></div>
+              <p class="explain">Insert all words into a trie; a word &#x27;counts&#x27; only if every one of its prefixes is also a complete word in the trie.</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>Multiple valid answers of the same length — return the lexicographically smallest.</li>
+<li>No word can be built letter by letter except single-character words.</li>
+<li>Empty word list — return &quot;&quot;.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/longest-word-in-dictionary/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details>
+        <details class="qcard" data-title="replace words with root prefix">
+          <summary>
+            <span class="q-index">17.4</span>
+            <span class="q-title">Replace Words With Root Prefix</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="qbody">
+            <p class="statement">Given a dictionary of word roots and a sentence, replace each word in the sentence with its shortest matching root.</p>
+            <div class="io-block">
+              <div class="io-row"><span class="io-label">Input</span><code>roots = [&quot;cat&quot;,&quot;bat&quot;,&quot;rat&quot;], sentence = &quot;the cattle was rattled by the battery&quot;</code></div>
+              <div class="io-row"><span class="io-label">Output</span><code>&quot;the cat was rat by the bat&quot;</code></div>
+              <p class="explain">Insert all roots into a trie; for each sentence word, walk the trie to find the shortest matching prefix (a root).</p>
+            </div>
+            <div class="corner-block">
+              <p class="corner-title">Corner / edge cases to test</p>
+              <ul class="corner-list"><li>A word with no matching root — stays unchanged.</li>
+<li>A word matching multiple roots of different lengths — use the shortest one.</li>
+<li>Sentence with extra spaces or punctuation.</li></ul>
+            </div>
+            <a class="lc-link" href="https://leetcode.com/problems/replace-words/" target="_blank" rel="noopener">Practice on LeetCode →</a>
+          </div>
+        </details></div>
+    </section>
+
+  <footer>Built for the Python + DSA learning roadmap · Track progress alongside DSA_Topics_to_Cover.docx</footer>
+</main>
+
+<script>
+// Scrollspy: highlight active nav link
+const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+const sections = Array.from(document.querySelectorAll('.section'));
+function onScroll() {
+  let current = sections[0];
+  for (const sec of sections) {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= 120) current = sec;
+  }
+  navLinks.forEach(l => l.classList.remove('active'));
+  const active = navLinks.find(l => l.dataset.sec === current.dataset.sec);
+  if (active) active.classList.add('active');
+}
+document.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// Search filter across question titles + statements
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  document.querySelectorAll('.qcard').forEach(card => {
+    const hay = card.dataset.title + ' ' + card.textContent.toLowerCase();
+    const match = q === '' || hay.includes(q);
+    card.classList.toggle('hidden', !match);
+    if (q !== '' && match) card.setAttribute('open', '');
+  });
+  document.querySelectorAll('.section').forEach(sec => {
+    const visible = Array.from(sec.querySelectorAll('.qcard')).some(c => !c.classList.contains('hidden'));
+    sec.classList.toggle('hidden', !visible && q !== '');
+  });
+});
+</script>
+</body>
+</html>
